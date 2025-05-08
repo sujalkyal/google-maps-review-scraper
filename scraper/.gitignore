@@ -1,0 +1,28 @@
+# Python
+*.pyc
+*.pyo
+*.pyod
+__pycache__/
+*.egg
+*.egg-info
+.DS_Store
+# Virtual Environment
+/venv/
+/.env
+# Documentation
+/docs/
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.whl
+
+# Other common files
+.DS_Store
+*.log
+# IDE
+*.pydevproject
+.idea/
+.vscode/
+# Test files
+/tests/
