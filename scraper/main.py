@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Request
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -8,10 +7,18 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
+from transformers import pipeline
 
 app = FastAPI()
 
+sentiment_pipeline = pipeline("sentiment-analysis", model="siebert/sentiment-roberta-large-english")
 
+async def analyze_sentiment(text: str):
+    if not text:
+        return {"error": "No text provided for sentiment analysis."}
+    
+    result = sentiment_pipeline(text)
+    return {"label": result[0]['label'], "score": result[0]['score']}
 
 @app.post("/scrape")
 async def scrape_reviews(req: Request):
@@ -87,13 +94,28 @@ async def scrape_reviews(req: Request):
             image_urls = [img.get_attribute("style").split('url("')[1].split('")')[0] for img in images]
         except:
             image_urls = []
+        try:
+            # Perform sentiment analysis on the review text
+            sentiment_result = await analyze_sentiment(text)
+            
+            if("error" in sentiment_result):
+                raise Exception(sentiment_result["error"])
+            
+            sentiment_label = sentiment_result["label"]
+            sentiment_score = sentiment_result["score"]
+        except Exception as e:
+            print(f"Error during sentiment analysis: {e}")
+            sentiment_label = "N/A"
+            sentiment_score = "N/A"
 
         data.append({
             "name": name,
             "rating": rating,
             "date": date,
             "text": text,
-            "images": image_urls
+            "images": image_urls,
+            "sentiment_label": sentiment_label,
+            "sentiment_score": sentiment_score
         })
 
     driver.quit()
