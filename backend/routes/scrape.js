@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { scrapeReviews } = require("../controllers/scrapeController");
 
-router.post("/", (req, res) => {
-  res.json({ message: "Scrape endpoint hit!" });
-});
+router.post("/", scrapeReviews);
 
 module.exports = router;
