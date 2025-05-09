@@ -1,6 +1,6 @@
 export default function ReviewSummary({ summary }) {
   return (
-    <div className="bg-white p-6 rounded-xl shadow mb-6 text-text">
+    <div className="bg-white p-6 rounded-xl shadow mb-6 text-text mt-8">
       <h2 className="text-xl font-bold mb-4 text-accent">Review Summary</h2>
       <p>Average Rating: {summary.avgRating} ⭐</p>
       <p>Total Reviews: {summary.total}</p>

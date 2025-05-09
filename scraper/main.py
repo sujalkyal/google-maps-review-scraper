@@ -86,11 +86,6 @@ async def scrape_reviews(req: Request):
             text = review.find_element(By.CLASS_NAME, "MyEned").text
         except:
             text = "N/A"
-        try:
-            images = review.find_elements(By.CLASS_NAME, "Tya61d")
-            image_urls = [img.get_attribute("style").split('url("')[1].split('")')[0] for img in images]
-        except:
-            image_urls = []
 
         try:
             sentiment_result = await analyze_sentiment(text)
@@ -106,7 +101,6 @@ async def scrape_reviews(req: Request):
             "rating": rating,
             "date": date,
             "text": text,
-            "images": image_urls,
             "sentiment_label": sentiment_label,
             "sentiment_score": sentiment_score
         })

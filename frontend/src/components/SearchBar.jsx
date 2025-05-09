@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, setLoading }) {
   const [mode, setMode] = useState("url"); // 'url' or 'name'
   const [input, setInput] = useState("");
   //const [suggestions, setSuggestions] = useState([]);
@@ -27,6 +27,7 @@ export default function SearchBar({ onSearch }) {
     }
 
     setError("");
+    setLoading(true);
 
     if (mode === "url") {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/generate-url`, {
@@ -35,9 +36,9 @@ export default function SearchBar({ onSearch }) {
         body: JSON.stringify({ url: input }),
       });
 
-      const { url } = await res.json();
-      if (url) {
-        onSearch(url);
+      const { url, name } = await res.json();
+      if (url && name) {
+        onSearch(url, name);
       } else {
         setError("Could not find a matching business.");
       }
@@ -48,9 +49,9 @@ export default function SearchBar({ onSearch }) {
         body: JSON.stringify({ name: input }),
       });
 
-      const { url } = await res.json();
-      if (url) {
-        onSearch(url);
+      const { url, name } = await res.json();
+      if (url && name) {
+        onSearch(url, name);
       } else {
         setError("Could not find a matching business.");
       }

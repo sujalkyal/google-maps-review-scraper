@@ -1,4 +1,5 @@
 const axios = require("axios");
+const db = require("../lib/db");
 
 exports.generate_map_url = async (req, res) => {
   const { url, name } = req.body;
@@ -17,6 +18,22 @@ exports.generate_map_url = async (req, res) => {
       );
       businessName = response.data.name;
       console.log("📛 Extracted business name:", businessName);
+    }
+
+    if (!businessName || typeof businessName !== 'string') {
+      return res.status(400).json({ error: "Business name could not be determined." });
+    }
+
+    const lowercaseName = businessName.toLowerCase();
+
+    // create new entry in the database if it doesn't exist
+    const existingEntry = await db.business.findUnique({
+      where: { name: lowercaseName },
+    });
+
+    if (existingEntry) {
+      console.log("🗂️ existing entry in the database");
+      return res.status(200).json({url: existingEntry.mapUrl, name: existingEntry.name});
     }
 
     const response = await axios.post(
