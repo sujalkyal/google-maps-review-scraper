@@ -8,11 +8,19 @@ exports.scrapeReviews = async (req, res) => {
   }
 
   try {
-    const response = await axios.post("http://localhost:8001/scrape", { url });
+    const response = await axios.post(
+      `${process.env.SCRAPER_BACKEND_URL}/scrape`,
+      { url }
+    );
     const reviews = response.data.reviews;
-    res.json({ reviews }).status(200);
+    res.status(200).json({ reviews });
   } catch (err) {
-    console.error("Error scraping:", err.message);
-    res.status(500).json({ error: "Failed to fetch reviews" });
+    console.error("Error scraping:", err.response?.data || err.message);
+    res
+      .status(500)
+      .json({
+        error: "Failed to fetch reviews",
+        details: err.response?.data || null,
+      });
   }
 };

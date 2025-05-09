@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.bg-background { background-color: #F8F4E1; }
+.bg-primary { background-color: #AF8F6F; }
+.bg-accent { background-color: #74512D; }
+.text-text { color: #543310; }
