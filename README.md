@@ -1,6 +1,6 @@
 # Google Maps Review Scraper
 
-![Project Banner](https://via.placeholder.com/1200x400?text=Google+Maps+Review+Scraper)
+![Project Banner](./assets/banner.png)
 
 ## 🔍 Overview
 
