@@ -11,7 +11,7 @@ export default function SearchBar({ onSearch, setLoading }) {
   // useEffect(() => {
   //   const fetchSuggestions = async () => {
   //     if (input.length < 3 || mode !== "name") return;
-  //     const res = await fetch(`${process.env.BACKEND_URL}/api/suggestions?q=${input}`);
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/suggestions?q=${input}`);
   //     const data = await res.json();
   //     setSuggestions(data);
   //   };
@@ -87,7 +87,7 @@ export default function SearchBar({ onSearch, setLoading }) {
 
       <input
         type="text"
-        placeholder={mode === "url" ? "Paste Google Maps URL" : "Type Business Name"}
+        placeholder={mode === "url" ? "Paste Google URL" : "Type Business Name"}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         className="w-full border border-gray-300 p-3 rounded mb-2"
